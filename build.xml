@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Ant wrapper for the Maven project.
+  两个核心 target：
+    * build : 导出程序的完整 jar 包 (调用 mvn package)
+    * test  : 运行单元测试             (调用 mvn test)
+  说明：工程实际由 Maven 管理依赖与生命周期，Ant 作为顶层目标入口，
+        以满足"支持 build 和 test 两个目标"的作业要求。
+-->
+<project name="complex-unit-test" default="build" basedir=".">
+
+    <property name="mvn.cmd" value="mvn"/>
+
+    <target name="clean" description="清理 target/ 目录">
+        <exec executable="${mvn.cmd}" failonerror="true">
+            <arg value="-B"/>
+            <arg value="clean"/>
+        </exec>
+    </target>
+
+    <target name="test" description="运行 JUnit 5 单元测试 (冒烟测试)">
+        <exec executable="${mvn.cmd}" failonerror="true">
+            <arg value="-B"/>
+            <arg value="-ntp"/>
+            <arg value="test"/>
+        </exec>
+    </target>
+
+    <target name="build" description="导出程序的完整 jar 包 (target/*.jar)">
+        <exec executable="${mvn.cmd}" failonerror="true">
+            <arg value="-B"/>
+            <arg value="-ntp"/>
+            <arg value="package"/>
+        </exec>
+    </target>
+
+    <target name="all" depends="clean,test,build"
+            description="全量构建：清理 -> 测试 -> 打包"/>
+
+</project>

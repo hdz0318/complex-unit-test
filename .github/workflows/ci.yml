@@ -1,0 +1,50 @@
+name: CI - Build & Smoke Test
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    name: Build jar & run unit tests (smoke)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 11 (Temurin)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '11'
+          cache: maven
+
+      - name: Show toolchain versions
+        run: |
+          java -version
+          mvn -v
+
+      - name: Run smoke tests (mvn test)
+        run: mvn -B -ntp test
+
+      - name: Build jar (mvn package)
+        if: always()
+        run: mvn -B -ntp package -DskipTests
+
+      - name: Upload Surefire test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surefire-reports
+          path: target/surefire-reports/
+
+      - name: Upload built jar
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: complex-unit-test-jar
+          path: target/*.jar

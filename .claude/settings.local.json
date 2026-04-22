@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cp \"C:/Users/44479/Documents/软件测试/单元测试/pom.xml\" \"C:/Users/44479/Documents/软件测试/测试管理/pom.xml\")",
+      "Bash(cp -r \"C:/Users/44479/Documents/软件测试/单元测试/src\" \"C:/Users/44479/Documents/软件测试/测试管理/src\")",
+      "Bash(mvn -B -ntp test)",
+      "Bash(mvn -B -ntp package -DskipTests)",
+      "Bash(xelatex --version)",
+      "Bash(xelatex -interaction=nonstopmode -halt-on-error report.tex)"
+    ]
+  }
+}
