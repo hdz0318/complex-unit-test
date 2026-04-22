@@ -249,7 +249,7 @@ public class Complex implements Serializable {
         }
         return new Complex(
                 real * factor.real - imaginary * factor.imaginary,
-                real * factor.imaginary - imaginary * factor.real);
+                real * factor.imaginary + imaginary * factor.real);
     }
 
     /**
